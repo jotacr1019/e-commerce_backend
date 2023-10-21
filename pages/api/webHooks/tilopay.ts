@@ -11,7 +11,7 @@ import {
 export default methods({
     async get(req: NextApiRequest, res: NextApiResponse) {
         const tilopayData = req.query;
-        // console.log(query);
+        console.log(req.query);
         // if (!tilopayData) {
         //     res.status(400).send({
         //         message: "query is required",
