@@ -1,4 +1,7 @@
 import algoliasearch from "algoliasearch";
 
-const client = algoliasearch("0MHB74PS9T", "89d7a2c89f4fc77adc8a5a792d5f012b");
+const algoliaAppId = process.env.algolia_APP_ID;
+const algoliaAdminApiKey = process.env.algolia_admin_API_KEY;
+
+const client = algoliasearch(algoliaAppId, algoliaAdminApiKey);
 export const productsIndex = client.initIndex("products");
