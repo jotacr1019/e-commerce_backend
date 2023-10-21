@@ -2,23 +2,23 @@ import { Order } from "models/order";
 
 type QueryData = {};
 
-export async function verifyTransactionAndUpdateOrder(query) {
-    const code = query.code;
+export async function verifyTransactionAndUpdateOrder(tilopayData) {
+    const code = tilopayData.code;
     if (code === "1") {
-        await updateOrder(query);
+        await updateOrder(tilopayData);
         return true;
     } else {
-        await updateOrder(query);
+        await updateOrder(tilopayData);
         return false;
     }
 }
 
-async function updateOrder(query) {
-    const orderId = query.reference;
+async function updateOrder(tilopayData) {
+    const orderId = tilopayData.reference;
     const order = new Order(orderId);
     await order.pullOrderData();
-    order.data.status = query.code === "1" ? "approved" : "rejected";
+    order.data.status = tilopayData.code === "1" ? "approved" : "rejected";
     order.data.updatedAt = new Date();
-    order.data.backupDataFromTilopay = query;
+    order.data.backupDataFromTilopay = tilopayData;
     await order.updateOrderData();
 }
