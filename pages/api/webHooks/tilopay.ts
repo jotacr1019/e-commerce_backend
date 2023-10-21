@@ -23,7 +23,16 @@ export default methods({
             // console.log("code NOT 1");
             res.status(406).send("code NOT 1");
         }
-        // sendSuccessfulMessageToBuyer();
+        sendSuccessfulMessageToBuyer(
+            {
+                title: "soft bed",
+                price: "930",
+                quantity: "1",
+                productId: "101990",
+                orderId: "10",
+            },
+            "jotaj19@hotmail.com"
+        );
         // sendMessageToSeller()
         // console.log("code 1");
         res.status(200).send("code 1");
