@@ -14,7 +14,8 @@ const mockData = {
     // return_data: {
     //     title: "soft bed",
     // },
-    callback_url: "http://pet-finder-app-muig.onrender.com/",
+    callback_url:
+        "https://e-commerce-backend-rho-blush.vercel.app/api/webHooks/tilopay",
 };
 
 async function handler(req: NextApiRequest, res: NextApiResponse, token) {

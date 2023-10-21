@@ -19,7 +19,7 @@ export default methods({
         // }
         const response = await verifyTransactionAndUpdateOrder(tilopayData);
         if (!response) {
-            // sendFailedMessageToBuyer();
+            sendFailedMessageToBuyer(1019, "jotaj19@hotmail.com");
             // console.log("code NOT 1");
             res.status(406).send("code NOT 1");
         }
