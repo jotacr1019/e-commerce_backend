@@ -1,0 +1,36 @@
+{
+    "name": "e_commerce_backend_project",
+    "version": "1.0.0",
+    "description": "Backend for an e-commerce project",
+    "main": "index.js",
+    "author": "Jose J Fernandez",
+    "directories": {
+        "lib": "lib"
+    },
+    "scripts": {
+        "test": "",
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next"
+    },
+    "keywords": [],
+    "license": "ISC",
+    "dependencies": {
+        "airtable": "^0.12.2",
+        "algoliasearch": "^4.20.0",
+        "date-fns": "^2.30.0",
+        "firebase-admin": "^11.11.0",
+        "jsonwebtoken": "^9.0.2",
+        "micro-method-router": "^0.1.0",
+        "next": "^13.5.4",
+        "parse-bearer-token": "^1.0.1",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "resend": "^1.1.0"
+    },
+    "devDependencies": {
+        "@types/node": "20.8.0",
+        "@types/react": "18.2.24",
+        "typescript": "5.2.2"
+    }
+}
