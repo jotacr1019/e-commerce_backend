@@ -11,9 +11,9 @@ const mockData = {
     type: 1,
     description: "Buying a soft red bed",
     client: "Jota nuevo 2",
-    // return_data: {
-    //     title: "soft bed",
-    // },
+    return_data: {
+        title: "soft bed",
+    },
     callback_url: "https://webhook.site/6ed1bbeb-3cc2-4b64-a4b6-9f8cde7071ad",
 };
 
