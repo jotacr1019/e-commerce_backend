@@ -12,7 +12,7 @@ export async function sendSuccessfulMessageToBuyer(data, buyer_email: string) {
             to: [buyer_email],
             subject: `Reporte de compra en E-commerce`,
             html:
-                `Estamos muy agradecidos por tu compra y esperamos tenerte de vuelta en nuetra plataforma pronto ${data.user_Name}!` +
+                `Estamos muy agradecidos por tu compra y esperamos tenerte de vuelta en nuetra plataforma pronto ${data.user_name}!` +
                 "<br>" +
                 "<br>" +
                 "<br>" +
@@ -40,6 +40,26 @@ export async function sendSuccessfulMessageToBuyer(data, buyer_email: string) {
                         "</strong>" +
                         "<br>";
                 }) +
+                // "- Nombre del producto: " +
+                // "<strong>" +
+                // data.title +
+                // "</strong>" +
+                // "<br>" +
+                // `- Precio: ${data.currency}` +
+                // "<strong>" +
+                // data.price +
+                // "</strong>" +
+                // "<br>" +
+                // "- Unidades compradas: " +
+                // "<strong>" +
+                // data.quantity +
+                // "</strong>" +
+                // "<br>" +
+                // "- Id del producto: " +
+                // "<strong>" +
+                // data.productId +
+                // "</strong>" +
+                // "<br>" +
                 "<br>" +
                 "<br>" +
                 "Orden de compra número: " +

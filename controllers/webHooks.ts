@@ -5,16 +5,20 @@ type QueryData = {};
 
 export async function verifyTransactionAndUpdateOrder(tilopayData) {
     const code = tilopayData.code;
+    console.log({ code });
     const tilopayToken = await getTokenFromTiloPay();
+    console.log({ tilopayToken });
     if (code === "1") {
+        console.log("code 1");
         const resp = await getDetailsOfPaymentLink(
-            tilopayToken,
+            tilopayToken.access_token,
             tilopayData.tilopayLinkId
         );
         console.log({ resp });
         await updateOrder(resp);
         return true;
     } else {
+        console.log("code NOT 1");
         const resp = await getDetailsOfPaymentLink(
             tilopayToken,
             tilopayData.tilopayLinkId
@@ -32,6 +36,6 @@ async function updateOrder(tilopayData) {
     order.data.status =
         tilopayData.payments[0].code === "1" ? "approved" : "rejected";
     order.data.updatedAt = new Date();
-    order.data.backupDataFromTilopay = tilopayData.payments;
+    order.data.backupDataFromTilopay = tilopayData.payments[0];
     await order.updateOrderData();
 }
