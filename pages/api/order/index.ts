@@ -14,7 +14,8 @@ const mockData = {
     return_data: {
         title: "soft bed",
     },
-    callback_url: "https://webhook.site/6ed1bbeb-3cc2-4b64-a4b6-9f8cde7071ad",
+    callback_url:
+        "https://e-commerce-backend-9nm342pe9-jose-joaquins-projects.vercel.app/api/webHooks/tilopay",
 };
 
 async function handler(req: NextApiRequest, res: NextApiResponse, token) {
