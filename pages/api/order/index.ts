@@ -6,7 +6,7 @@ import { createOrder } from "controllers/order";
 import { getProductById } from "controllers/products";
 
 const mockData = {
-    amount: "930",
+    amount: "770",
     currency: "USD",
     type: 1,
     description: "Buying a soft red bed",

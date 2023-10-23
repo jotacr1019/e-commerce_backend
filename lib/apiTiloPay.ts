@@ -56,3 +56,23 @@ export async function createPaymentLink(
         console.log(e);
     }
 }
+
+export async function getDetailsOfPaymentLink(
+    token: string,
+    tilopayLinkId: string
+) {
+    try {
+        const resp = await fetch(
+            `https://app.tilopay.com/api/v1/getDetailLinkPayment/${tilopayLinkId}/${apiKey}`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: "Bearer " + token,
+                },
+            }
+        );
+        return await resp.json();
+    } catch (e) {
+        console.log(e);
+    }
+}
