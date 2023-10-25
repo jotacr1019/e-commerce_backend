@@ -21,8 +21,7 @@ export async function verifyTransactionAndUpdateOrder(tilopayData) {
 
         const order = await updateAndReturnOrder(detailsOfPayment);
 
-        console.log({ order });
-        sendSuccessfulMessageToBuyer(
+        await sendSuccessfulMessageToBuyer(
             {
                 user_name: detailsOfPayment.detail.client,
                 title: "soft bed",
@@ -34,7 +33,17 @@ export async function verifyTransactionAndUpdateOrder(tilopayData) {
             },
             detailsOfPayment.payments[0].email
         );
-        sendMessageToSeller(
+        console.log("success msj buyer: ", {
+            user_name: detailsOfPayment.detail.client,
+            title: "soft bed",
+            currency: detailsOfPayment.detail.currency,
+            price: detailsOfPayment.detail.amount,
+            quantity: "1",
+            productId: order.data.productId,
+            orderId: detailsOfPayment.detail.reference,
+            buyer_email: detailsOfPayment.payments[0].email,
+        });
+        await sendMessageToSeller(
             {
                 user_name: detailsOfPayment.detail.client,
                 title: "soft bed",
@@ -47,6 +56,17 @@ export async function verifyTransactionAndUpdateOrder(tilopayData) {
             },
             order.data.aditionalInfo.sellerInfo.email
         );
+        console.log("success msj seller: ", {
+            user_name: detailsOfPayment.detail.client,
+            title: "soft bed",
+            currency: detailsOfPayment.detail.currency,
+            price: detailsOfPayment.detail.amount,
+            quantity: "1",
+            productId: order.data.productId,
+            stock: 2,
+            orderId: detailsOfPayment.detail.reference,
+            seller_email: order.data.aditionalInfo.sellerInfo.email,
+        });
         return true;
     } else {
         console.log("code NOT 1");
@@ -55,7 +75,7 @@ export async function verifyTransactionAndUpdateOrder(tilopayData) {
             tilopayData.tilopayLinkId
         );
         const order = await updateAndReturnOrder(detailsOfPayment);
-        sendFailedMessageToBuyer(
+        await sendFailedMessageToBuyer(
             detailsOfPayment.detail.reference,
             detailsOfPayment.payments[0].email
         );

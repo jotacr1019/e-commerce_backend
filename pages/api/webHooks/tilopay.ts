@@ -8,6 +8,7 @@ export default methods({
 
         const response = await verifyTransactionAndUpdateOrder(tilopayData);
 
+        console.log("response in webhooks", response);
         res.status(200).send("code 1");
     },
 });
