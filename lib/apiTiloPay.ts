@@ -2,8 +2,8 @@ const apiKey = process.env.tilopay_API_KEY;
 const apiUser = process.env.tilopay_API_USER;
 const apiPassword = process.env.tilopay_API_PASSWORD;
 
-type ProductData = {
-    amount: string; // number???
+type PaymentLinkData = {
+    amount: string;
     currency: string;
     type: number;
     description: string;
@@ -27,7 +27,7 @@ export async function getTokenFromTiloPay() {
 
 export async function createPaymentLink(
     token: string,
-    productData: ProductData,
+    paymentLinkData: PaymentLinkData,
     orderId: string
 ) {
     try {
@@ -41,13 +41,13 @@ export async function createPaymentLink(
                 },
                 body: JSON.stringify({
                     key: apiKey,
-                    amount: productData.amount,
-                    currency: productData.currency,
+                    amount: paymentLinkData.amount,
+                    currency: paymentLinkData.currency,
                     reference: orderId,
-                    type: productData.type,
-                    description: productData.description,
-                    client: productData.client,
-                    callback_url: productData.callback_url,
+                    type: paymentLinkData.type,
+                    description: paymentLinkData.description,
+                    client: paymentLinkData.client,
+                    callback_url: paymentLinkData.callback_url,
                 }),
             }
         );

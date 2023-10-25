@@ -5,12 +5,13 @@ import { sendCodeToUser } from "controllers/auth";
 export default methods({
     async post(req: NextApiRequest, res: NextApiResponse) {
         const { email } = req.body;
+        const userName = req.body.userName ? req.body.userName : "Usuario";
         if (!email) {
             res.status(400).send({
                 message: "Email is required",
             });
         }
-        const response = await sendCodeToUser(email);
+        const response = await sendCodeToUser(email, userName);
         if (!response) {
             res.status(500).send("An error occurred");
         }

@@ -8,12 +8,18 @@ type ProductInfo = {};
 export async function createOrder(
     token: TokenData,
     productId: string,
-    productInfo
+    productInfo,
+    product
 ): Promise<Order> {
     const newOrder = await Order.createNewOrder({
         userId: token.userId,
         productId,
-        aditionalInfo: productInfo,
+        aditionalInfo: {
+            productInfo,
+            sellerInfo: {
+                email: product.object["Seller email"],
+            },
+        },
         status: "pending",
     });
     return newOrder;

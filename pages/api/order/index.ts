@@ -5,22 +5,13 @@ import { getTokenFromTiloPay, createPaymentLink } from "lib/apiTiloPay";
 import { createOrder } from "controllers/order";
 import { getProductById } from "controllers/products";
 
-const mockData = {
-    amount: "770",
-    currency: "USD",
-    type: 1,
-    description: "Buying a soft red bed",
-    client: "Jota nuevo 2",
-    return_data: {
-        title: "soft bed",
-    },
-    callback_url:
-        "https://e-commerce-backend-rho-blush.vercel.app/api/webHooks/tilopay",
-};
+// https://webhook.site/6ed1bbeb-3cc2-4b64-a4b6-9f8cde7071ad
+// https://e-commerce-backend-rho-blush.vercel.app/api/webHooks/tilopay
 
 async function handler(req: NextApiRequest, res: NextApiResponse, token) {
-    const { productId } = req.query as any; // as any?
-    const productInfo = req.body;
+    const { productId } = req.query as any;
+    const productInfo = req.body.productInfo;
+    const clientName = req.body.clientInfo.clientName;
     if (!productId || !productInfo) {
         res.status(400).send({
             message: "productId and productInfo are required",
@@ -36,14 +27,28 @@ async function handler(req: NextApiRequest, res: NextApiResponse, token) {
         return;
     }
 
-    const newOrder = await createOrder(token, productId, productInfo);
+    const newOrder = await createOrder(token, productId, productInfo, product);
 
-    const resp = await getTokenFromTiloPay();
-    const tilopayToken = resp.access_token;
+    const tilopayResponse = await getTokenFromTiloPay();
+    const tilopayToken = tilopayResponse.access_token;
 
-    // // productInfo.amount OR go to DB with productId
-    const link = await createPaymentLink(tilopayToken, mockData, newOrder.id);
-    const { url, id } = link;
+    const dataForPaymentLink = {
+        amount: product.object["Unit cost"],
+        currency: product.object["Currency"],
+        type: 1,
+        description: "Buying a soft red bed",
+        client: clientName,
+        callback_url:
+            "https://e-commerce-backend-rho-blush.vercel.app/api/webHooks/tilopay",
+    };
+
+    const paymentLink = await createPaymentLink(
+        tilopayToken,
+        dataForPaymentLink,
+        newOrder.id
+    );
+    const { url, id } = paymentLink;
+
     res.status(200).send({ url, id });
 }
 

@@ -16,8 +16,6 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
                     };
                 });
                 await productsIndex.saveObjects(objects);
-
-                // console.log("Next page!!");
                 fetchNextPage();
             },
             function done(err) {
@@ -26,7 +24,6 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
                     res.status(500).send("Database Sync failed");
                     return;
                 }
-                // console.log("DONE");
                 res.status(200).send("Database Sync done");
             }
         );

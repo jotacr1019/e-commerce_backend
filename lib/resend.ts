@@ -18,48 +18,47 @@ export async function sendSuccessfulMessageToBuyer(data, buyer_email: string) {
                 "<br>" +
                 "Detalles de tu compra:" +
                 "<br>" +
-                data.purchases.map((item) => {
-                    "- Nombre del producto: " +
-                        "<strong>" +
-                        item.title +
-                        "</strong>" +
-                        "<br>" +
-                        `- Precio: ${item.currency}` +
-                        "<strong>" +
-                        item.price +
-                        "</strong>" +
-                        "<br>" +
-                        "- Unidades compradas: " +
-                        "<strong>" +
-                        item.quantity +
-                        "</strong>" +
-                        "<br>" +
-                        "- Id del producto: " +
-                        "<strong>" +
-                        item.productId +
-                        "</strong>" +
-                        "<br>";
-                }) +
-                // "- Nombre del producto: " +
-                // "<strong>" +
-                // data.title +
-                // "</strong>" +
-                // "<br>" +
-                // `- Precio: ${data.currency}` +
-                // "<strong>" +
-                // data.price +
-                // "</strong>" +
-                // "<br>" +
-                // "- Unidades compradas: " +
-                // "<strong>" +
-                // data.quantity +
-                // "</strong>" +
-                // "<br>" +
-                // "- Id del producto: " +
-                // "<strong>" +
-                // data.productId +
-                // "</strong>" +
-                // "<br>" +
+                // data.purchases.map((item) => {
+                //     "- Nombre del producto: " +
+                //         "<strong>" +
+                //         item.title +
+                //         "</strong>" +
+                //         "<br>" +
+                //         `- Precio: ${item.currency}` +
+                //         "<strong>" +
+                //         item.price +
+                //         "</strong>" +
+                //         "<br>" +
+                //         "- Unidades compradas: " +
+                //         "<strong>" +
+                //         item.quantity +
+                //         "</strong>" +
+                //         "<br>" +
+                //         "- Id del producto: " +
+                //         "<strong>" +
+                //         item.productId +
+                //         "</strong>" +
+                //         "<br>";
+                // }) +
+                "- Nombre del producto: " +
+                "<strong>" +
+                data.title +
+                "</strong>" +
+                "<br>" +
+                `- Precio: ${data.currency} ` +
+                "<strong>" +
+                data.price +
+                "</strong>" +
+                "<br>" +
+                "- Unidades compradas: " +
+                "<strong>" +
+                data.quantity +
+                "</strong>" +
+                "<br>" +
+                "- Id del producto: " +
+                "<strong>" +
+                data.productId +
+                "</strong>" +
                 "<br>" +
                 "<br>" +
                 "Orden de compra número: " +
@@ -110,42 +109,66 @@ export async function sendMessageToSeller(data, seller_email) {
                 "<strong>" +
                 data.user_Name +
                 "</strong>" +
-                "<br>" +
-                "- Email: " +
-                "<strong>" +
-                data.userEmail +
-                "</strong>" +
+                // "<br>" +
+                // "- Email: " +
+                // "<strong>" +
+                // data.userEmail +
+                // "</strong>" +
                 "<br>" +
                 "<br>" +
                 "Detalles de la venta:" +
                 "<br>" +
-                data.purchases.map((item) => {
-                    "- Nombre del producto: " +
-                        "<strong>" +
-                        item.title +
-                        "</strong>" +
-                        "<br>" +
-                        `- Precio: ${item.currency}` +
-                        "<strong>" +
-                        item.price +
-                        "</strong>" +
-                        "<br>" +
-                        "- Unidades vendidas: " +
-                        "<strong>" +
-                        item.quantity +
-                        "</strong>" +
-                        "<br>" +
-                        "- Id del producto: " +
-                        "<strong>" +
-                        item.productId +
-                        "</strong>" +
-                        "<br>" +
-                        "- Unidades restantes en stock: " +
-                        "<strong>" +
-                        item.stock +
-                        "</strong>" +
-                        "<br>";
-                }) +
+                // data.purchases.map((item) => {
+                //     "- Nombre del producto: " +
+                //         "<strong>" +
+                //         item.title +
+                //         "</strong>" +
+                //         "<br>" +
+                //         `- Precio: ${item.currency}` +
+                //         "<strong>" +
+                //         item.price +
+                //         "</strong>" +
+                //         "<br>" +
+                //         "- Unidades vendidas: " +
+                //         "<strong>" +
+                //         item.quantity +
+                //         "</strong>" +
+                //         "<br>" +
+                //         "- Id del producto: " +
+                //         "<strong>" +
+                //         item.productId +
+                //         "</strong>" +
+                //         "<br>" +
+                //         "- Unidades restantes en stock: " +
+                //         "<strong>" +
+                //         item.stock +
+                //         "</strong>" +
+                //         "<br>";
+                // }) +
+                "- Nombre del producto: " +
+                "<strong>" +
+                data.title +
+                "</strong>" +
+                "<br>" +
+                `- Precio: ${data.currency} ` +
+                "<strong>" +
+                data.price +
+                "</strong>" +
+                "<br>" +
+                "- Unidades vendidas: " +
+                "<strong>" +
+                data.quantity +
+                "</strong>" +
+                "<br>" +
+                "- Id del producto: " +
+                "<strong>" +
+                data.productId +
+                "</strong>" +
+                "<br>" +
+                "- Unidades restantes en stock: " +
+                "<strong>" +
+                data.stock +
+                "</strong>" +
                 "<br>" +
                 "<br>" +
                 "Orden de compra número: " +
