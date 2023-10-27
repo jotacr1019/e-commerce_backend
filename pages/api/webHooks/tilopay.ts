@@ -11,6 +11,6 @@ export default methods({
         if (!response) {
             res.status(500).send("An error occurred");
         }
-        res.status(200).send("Data received from tilopay");
+        res.status(200).send("Data received correctly from tilopay");
     },
 });
