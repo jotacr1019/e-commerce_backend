@@ -5,7 +5,7 @@ export class User {
     ref: FirebaseFirestore.DocumentReference;
     id: string;
     data: any;
-    constructor(id) {
+    constructor(id: string) {
         this.id = id;
         this.ref = userCollection.doc(id);
     }

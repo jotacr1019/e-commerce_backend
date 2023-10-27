@@ -13,7 +13,7 @@ export default methods({
         }
         const auth = await Auth.findByEmailAndCode(email, code);
         if (!auth) {
-            res.status(401).send({
+            res.status(404).send({
                 message: "Email or code not match",
             });
         }

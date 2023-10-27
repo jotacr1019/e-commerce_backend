@@ -13,7 +13,7 @@ export class Order {
     ref: FirebaseFirestore.DocumentReference;
     id: string;
     data: FirebaseFirestore.DocumentData;
-    constructor(id) {
+    constructor(id: string) {
         this.id = id;
         this.ref = orderCollection.doc(id);
     }
