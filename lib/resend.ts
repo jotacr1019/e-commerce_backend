@@ -3,9 +3,31 @@ import { Resend } from "resend";
 const resend_api_key = process.env.RESEND_API_KEY;
 const resend = new Resend(resend_api_key);
 
-type Data = {};
+type BuyerData = {
+    user_name: string;
+    title: string;
+    currency: string;
+    price: string;
+    quantity: string;
+    product_id: string;
+    order_id: string;
+};
 
-export async function sendSuccessfulMessageToBuyer(data, buyer_email: string) {
+type SellerData = {
+    user_name: string;
+    title: string;
+    currency: string;
+    price: string;
+    quantity: string;
+    product_id: string;
+    stock: string;
+    order_id: string;
+};
+
+export async function sendSuccessfulMessageToBuyer(
+    data: BuyerData,
+    buyer_email: string
+) {
     try {
         await resend.emails.send({
             from: "E-commerce <onboarding@resend.dev>",
@@ -18,28 +40,6 @@ export async function sendSuccessfulMessageToBuyer(data, buyer_email: string) {
                 "<br>" +
                 "Detalles de tu compra:" +
                 "<br>" +
-                // data.purchases.map((item) => {
-                //     "- Nombre del producto: " +
-                //         "<strong>" +
-                //         item.title +
-                //         "</strong>" +
-                //         "<br>" +
-                //         `- Precio: ${item.currency}` +
-                //         "<strong>" +
-                //         item.price +
-                //         "</strong>" +
-                //         "<br>" +
-                //         "- Unidades compradas: " +
-                //         "<strong>" +
-                //         item.quantity +
-                //         "</strong>" +
-                //         "<br>" +
-                //         "- Id del producto: " +
-                //         "<strong>" +
-                //         item.productId +
-                //         "</strong>" +
-                //         "<br>";
-                // }) +
                 "- Nombre del producto: " +
                 "<strong>" +
                 data.title +
@@ -57,13 +57,13 @@ export async function sendSuccessfulMessageToBuyer(data, buyer_email: string) {
                 "<br>" +
                 "- Id del producto: " +
                 "<strong>" +
-                data.productId +
+                data.product_id +
                 "</strong>" +
                 "<br>" +
                 "<br>" +
                 "Orden de compra número: " +
                 "<strong>" +
-                data.orderId +
+                data.order_id +
                 "</strong>",
         });
     } catch (error) {
@@ -71,35 +71,30 @@ export async function sendSuccessfulMessageToBuyer(data, buyer_email: string) {
     }
 }
 
-export async function sendFailedMessageToBuyer(data, buyer_email) {
+export async function sendFailedMessageToBuyer(buyer_email: string) {
     try {
         await resend.emails.send({
             from: "E-commerce <onboarding@resend.dev>",
             to: [buyer_email],
             subject: `Reporte de compra en E-commerce`,
-            html:
-                `Lamentamos informarte que tu compra no pudo ser procesada, esperamos tenerte de vuelta en nuetra plataforma pronto ${data.user_Name}!` +
-                "<br>" +
-                "<br>" +
-                "<br>" +
-                "Orden de compra número: " +
-                "<strong>" +
-                data.orderId +
-                "</strong>",
+            html: `Lamentamos informarte que tu compra no pudo ser procesada, esperamos tenerte de vuelta en nuetra plataforma pronto!`,
         });
     } catch (error) {
         console.error(error);
     }
 }
 
-export async function sendMessageToSeller(data, seller_email) {
+export async function sendMessageToSeller(
+    data: SellerData,
+    seller_email: string
+) {
     try {
         await resend.emails.send({
             from: "E-commerce <onboarding@resend.dev>",
             to: [seller_email],
             subject: `Reporte de venta en E-commerce`,
             html:
-                `El usuario ${data.user_Name} ha realizado una compra en nuestra plataforma!` +
+                `El usuario ${data.user_name} ha realizado una compra en nuestra plataforma!` +
                 "<br>" +
                 "<br>" +
                 "<br>" +
@@ -107,44 +102,12 @@ export async function sendMessageToSeller(data, seller_email) {
                 "<br>" +
                 "- Nombre: " +
                 "<strong>" +
-                data.user_Name +
+                data.user_name +
                 "</strong>" +
-                // "<br>" +
-                // "- Email: " +
-                // "<strong>" +
-                // data.userEmail +
-                // "</strong>" +
                 "<br>" +
                 "<br>" +
                 "Detalles de la venta:" +
                 "<br>" +
-                // data.purchases.map((item) => {
-                //     "- Nombre del producto: " +
-                //         "<strong>" +
-                //         item.title +
-                //         "</strong>" +
-                //         "<br>" +
-                //         `- Precio: ${item.currency}` +
-                //         "<strong>" +
-                //         item.price +
-                //         "</strong>" +
-                //         "<br>" +
-                //         "- Unidades vendidas: " +
-                //         "<strong>" +
-                //         item.quantity +
-                //         "</strong>" +
-                //         "<br>" +
-                //         "- Id del producto: " +
-                //         "<strong>" +
-                //         item.productId +
-                //         "</strong>" +
-                //         "<br>" +
-                //         "- Unidades restantes en stock: " +
-                //         "<strong>" +
-                //         item.stock +
-                //         "</strong>" +
-                //         "<br>";
-                // }) +
                 "- Nombre del producto: " +
                 "<strong>" +
                 data.title +
@@ -162,7 +125,7 @@ export async function sendMessageToSeller(data, seller_email) {
                 "<br>" +
                 "- Id del producto: " +
                 "<strong>" +
-                data.productId +
+                data.product_id +
                 "</strong>" +
                 "<br>" +
                 "- Unidades restantes en stock: " +
@@ -173,7 +136,7 @@ export async function sendMessageToSeller(data, seller_email) {
                 "<br>" +
                 "Orden de compra número: " +
                 "<strong>" +
-                data.orderId +
+                data.order_id +
                 "</strong>",
         });
     } catch (error) {
@@ -181,7 +144,7 @@ export async function sendMessageToSeller(data, seller_email) {
     }
 }
 
-export async function sendCodeToEmail(user_email, code) {
+export async function sendCodeToEmail(user_email: string, code: number) {
     try {
         await resend.emails.send({
             from: "E-commerce <onboarding@resend.dev>",

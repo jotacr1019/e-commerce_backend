@@ -1,8 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import methods from "micro-method-router";
 import { authMiddleware } from "lib/middlewares";
-import { getTokenFromTiloPay, createPaymentLink } from "lib/apiTiloPay";
-import { createOrder } from "controllers/order";
+import { createOrder, getPaymentLink } from "controllers/order";
 import { getProductById } from "controllers/products";
 
 // https://webhook.site/6ed1bbeb-3cc2-4b64-a4b6-9f8cde7071ad
@@ -19,35 +18,34 @@ async function handler(req: NextApiRequest, res: NextApiResponse, token) {
         return;
     }
 
-    const product = await getProductById(productId);
-    if (!product) {
+    const productFound = await getProductById(productId);
+    if (!productFound) {
         res.status(404).send({
             message: "Product not found",
         });
         return;
     }
 
-    const newOrder = await createOrder(token, productId, productInfo, product);
+    const newOrder = await createOrder(
+        token,
+        productId,
+        productInfo,
+        productFound
+    );
 
-    const tilopayResponse = await getTokenFromTiloPay();
-    const tilopayToken = tilopayResponse.access_token;
-
-    const dataForPaymentLink = {
-        amount: product.object["Unit cost"],
-        currency: product.object["Currency"],
-        type: 1,
-        description: "Buying a soft red bed",
-        client: clientName,
-        callback_url:
-            "https://e-commerce-backend-rho-blush.vercel.app/api/webHooks/tilopay",
-    };
-
-    const paymentLink = await createPaymentLink(
-        tilopayToken,
-        dataForPaymentLink,
-        newOrder.id
+    const paymentLink = await getPaymentLink(
+        clientName,
+        newOrder.id,
+        productFound
     );
     const { url, id } = paymentLink;
+
+    if (!url || !id) {
+        res.status(500).send({
+            message: "An error occurred",
+        });
+        return;
+    }
 
     res.status(200).send({ url, id });
 }

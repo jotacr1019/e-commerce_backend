@@ -12,7 +12,7 @@ type PaymentLinkData = {
 };
 
 export async function getTokenFromTiloPay() {
-    const resp = await fetch("https://app.tilopay.com/api/v1/login", {
+    const response = await fetch("https://app.tilopay.com/api/v1/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -22,7 +22,7 @@ export async function getTokenFromTiloPay() {
             password: apiPassword,
         }),
     });
-    return await resp.json();
+    return await response.json();
 }
 
 export async function createPaymentLink(
@@ -31,7 +31,7 @@ export async function createPaymentLink(
     orderId: string
 ) {
     try {
-        const resp = await fetch(
+        const response = await fetch(
             "https://app.tilopay.com/api/v1/createLinkPayment",
             {
                 method: "POST",
@@ -51,7 +51,7 @@ export async function createPaymentLink(
                 }),
             }
         );
-        return await resp.json();
+        return await response.json();
     } catch (e) {
         console.log(e);
     }
@@ -62,7 +62,7 @@ export async function getDetailsOfPaymentLink(
     tilopayLinkId: string
 ) {
     try {
-        const resp = await fetch(
+        const response = await fetch(
             `https://app.tilopay.com/api/v1/getDetailLinkPayment/${tilopayLinkId}/${apiKey}`,
             {
                 method: "GET",
@@ -71,7 +71,7 @@ export async function getDetailsOfPaymentLink(
                 },
             }
         );
-        return await resp.json();
+        return await response.json();
     } catch (e) {
         console.log(e);
     }

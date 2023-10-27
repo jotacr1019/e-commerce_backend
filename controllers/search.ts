@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest } from "next";
 import { productsIndex } from "lib/algolia";
 import { stablishLimitAndOffset } from "lib/requests";
 

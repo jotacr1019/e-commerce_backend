@@ -6,91 +6,67 @@ import {
     sendMessageToSeller,
 } from "lib/resend";
 
-type QueryData = {};
-
 export async function verifyTransactionAndUpdateOrder(tilopayData) {
-    const code = tilopayData.code;
-    const tilopayToken = await getTokenFromTiloPay();
+    try {
+        const code = tilopayData.code;
+        const tilopayToken = await getTokenFromTiloPay();
 
-    if (code === "1") {
-        // console.log("code 1");
-        const detailsOfPayment = await getDetailsOfPaymentLink(
-            tilopayToken.access_token,
-            tilopayData.tilopayLinkId
-        );
+        if (code === "1") {
+            const detailsOfPayment = await getDetailsOfPaymentLink(
+                tilopayToken.access_token,
+                tilopayData.tilopayLinkId
+            );
+            const order = await updateAndReturnOrder(detailsOfPayment);
 
-        const order = await updateAndReturnOrder(detailsOfPayment);
+            await sendMessageToSeller(
+                {
+                    user_name: detailsOfPayment.detail.client,
+                    title: "soft bed",
+                    currency: detailsOfPayment.detail.currency,
+                    price: detailsOfPayment.detail.amount,
+                    quantity: "1",
+                    product_id: order.data.productId,
+                    stock: "2",
+                    order_id: detailsOfPayment.detail.reference,
+                },
+                order.data.aditionalInfo.sellerInfo.email
+            );
 
-        await sendSuccessfulMessageToBuyer(
-            {
-                user_name: detailsOfPayment.detail.client,
-                title: "soft bed",
-                currency: detailsOfPayment.detail.currency,
-                price: detailsOfPayment.detail.amount,
-                quantity: "1",
-                productId: order.data.productId,
-                orderId: detailsOfPayment.detail.reference,
-            },
-            detailsOfPayment.payments[0].email
-        );
-        console.log("success msj buyer: ", {
-            user_name: detailsOfPayment.detail.client,
-            title: "soft bed",
-            currency: detailsOfPayment.detail.currency,
-            price: detailsOfPayment.detail.amount,
-            quantity: "1",
-            productId: order.data.productId,
-            orderId: detailsOfPayment.detail.reference,
-            buyer_email: detailsOfPayment.payments[0].email,
-        });
-        await sendMessageToSeller(
-            {
-                user_name: detailsOfPayment.detail.client,
-                title: "soft bed",
-                currency: detailsOfPayment.detail.currency,
-                price: detailsOfPayment.detail.amount,
-                quantity: "1",
-                productId: order.data.productId,
-                stock: 2,
-                orderId: detailsOfPayment.detail.reference,
-            },
-            order.data.aditionalInfo.sellerInfo.email
-        );
-        console.log("success msj seller: ", {
-            user_name: detailsOfPayment.detail.client,
-            title: "soft bed",
-            currency: detailsOfPayment.detail.currency,
-            price: detailsOfPayment.detail.amount,
-            quantity: "1",
-            productId: order.data.productId,
-            stock: 2,
-            orderId: detailsOfPayment.detail.reference,
-            seller_email: order.data.aditionalInfo.sellerInfo.email,
-        });
-        return true;
-    } else {
-        console.log("code NOT 1");
-        const detailsOfPayment = await getDetailsOfPaymentLink(
-            tilopayToken,
-            tilopayData.tilopayLinkId
-        );
-        const order = await updateAndReturnOrder(detailsOfPayment);
-        await sendFailedMessageToBuyer(
-            detailsOfPayment.detail.reference,
-            detailsOfPayment.payments[0].email
-        );
-        return false;
+            await sendSuccessfulMessageToBuyer(
+                {
+                    user_name: detailsOfPayment.detail.client,
+                    title: "soft bed",
+                    currency: detailsOfPayment.detail.currency,
+                    price: detailsOfPayment.detail.amount,
+                    quantity: "1",
+                    product_id: order.data.productId,
+                    order_id: detailsOfPayment.detail.reference,
+                },
+                detailsOfPayment.payments[0].email
+            );
+            return true;
+        } else {
+            const detailsOfPayment = await getDetailsOfPaymentLink(
+                tilopayToken,
+                tilopayData.tilopayLinkId
+            );
+            const order = await updateAndReturnOrder(detailsOfPayment);
+            await sendFailedMessageToBuyer(detailsOfPayment.payments[0].email);
+            return false;
+        }
+    } catch (e) {
+        console.log(e);
     }
 }
 
-async function updateAndReturnOrder(tilopayData) {
-    const orderId = tilopayData.detail.reference;
+async function updateAndReturnOrder(datailsOfPayment) {
+    const orderId = datailsOfPayment.detail.reference;
     const order = new Order(orderId);
     await order.pullOrderData();
     order.data.status =
-        tilopayData.payments[0].code === "1" ? "approved" : "rejected";
+        datailsOfPayment.payments[0].code === "1" ? "approved" : "rejected";
     order.data.updatedAt = new Date();
-    order.data.backupDataFromTilopay = tilopayData.payments[0];
+    order.data.backupDataFromTilopay = datailsOfPayment.payments[0];
     await order.updateOrderData();
     return order;
 }
