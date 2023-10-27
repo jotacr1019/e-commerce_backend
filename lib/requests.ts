@@ -1,9 +1,9 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest } from "next";
 
 export function stablishLimitAndOffset(
     req: NextApiRequest,
     maxLimit: number = 50,
-    maxOffset: number = 1000
+    maxOffset: number = 500
 ) {
     const queryLimit = parseInt(req.query.limit as string);
     const queryOffset = parseInt(req.query.offset as string);
