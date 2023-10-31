@@ -17,6 +17,7 @@ async function getOrdersOfUser(
         res.status(404).send({
             message: "Not found any orders",
         });
+        return;
     }
     const response = ordersOfUser.map((order) => {
         return {

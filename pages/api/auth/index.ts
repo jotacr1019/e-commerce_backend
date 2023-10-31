@@ -10,6 +10,7 @@ export default methods({
             res.status(400).send({
                 message: "Email is required",
             });
+            return;
         }
         const response = await sendCodeToUser(email, userName);
         if (!response) {
