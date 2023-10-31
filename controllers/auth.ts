@@ -30,18 +30,13 @@ export async function sendCodeToUser(
     email: string,
     userName: string
 ): Promise<boolean> {
-    try {
-        const auth = await findOrCreateUser(email, userName);
-        const code = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
-        const dateNow = new Date();
-        const dateThirtyMinsLater = addMinutes(dateNow, 30);
-        auth.data.code = code;
-        auth.data.expires = dateThirtyMinsLater;
-        await auth.pushUserData();
-        await sendCodeToEmail(email, code);
-        return true;
-    } catch (e) {
-        console.error(e);
-        return false;
-    }
+    const auth = await findOrCreateUser(email, userName);
+    const code = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+    const dateNow = new Date();
+    const dateThirtyMinsLater = addMinutes(dateNow, 30);
+    auth.data.code = code;
+    auth.data.expires = dateThirtyMinsLater;
+    await auth.pushUserData();
+    await sendCodeToEmail(email, code);
+    return true;
 }

@@ -4,13 +4,22 @@ import { verifyTransactionAndUpdateOrder } from "controllers/webHooks";
 
 export default methods({
     async get(req: NextApiRequest, res: NextApiResponse) {
-        const tilopayData = req.query;
+        try {
+            const tilopayData = req.query;
 
-        const response = await verifyTransactionAndUpdateOrder(tilopayData);
+            const response = await verifyTransactionAndUpdateOrder(tilopayData);
 
-        if (!response) {
-            res.status(500).send("An error occurred");
+            if (!response) {
+                res.status(500).send(
+                    "The transaction was not completed correctly"
+                );
+            }
+            res.status(200).send("Data received correctly from tilopay");
+        } catch (e) {
+            res.status(500).send({
+                message: "An error occurred",
+                error: e,
+            });
         }
-        res.status(200).send("Data received correctly from tilopay");
     },
 });
