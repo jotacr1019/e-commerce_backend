@@ -8,7 +8,7 @@ let querySchema = object({
     orderId: string().required(),
 });
 
-async function handlerOrder(req: NextApiRequest, res: NextApiResponse, token) {
+async function handlerOrder(req: NextApiRequest, res: NextApiResponse) {
     const orderId = req.query.orderId as string;
     const order = await Order.getOrderById(orderId);
     if (!order.data) {
