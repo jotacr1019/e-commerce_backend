@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import methods from "micro-method-router";
-import { authMiddleware, schemaMiddleware } from "lib/middlewares";
 import { createOrder, getPaymentLink } from "controllers/order";
 import { getProductById } from "controllers/products";
+import { authMiddleware, schemaMiddleware } from "lib/middlewares";
 import { object, string, number } from "yup";
 
 // https://webhook.site/6ed1bbeb-3cc2-4b64-a4b6-9f8cde7071ad

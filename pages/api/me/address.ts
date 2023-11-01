@@ -1,7 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import methods from "micro-method-router";
-import { authMiddleware } from "lib/middlewares";
 import { User } from "models/user";
+import { authMiddleware, schemaMiddleware } from "lib/middlewares";
+import { object, string } from "yup";
+
+let bodySchema = object({
+    address: string().required(),
+});
 
 type TokenData = {
     userId: string;
@@ -18,8 +23,21 @@ async function updateAddressOfUser(
     res.status(200).send(user.data.address);
 }
 
-const handlerMethods = methods({
-    patch: updateAddressOfUser,
+// Validate the token and execute the updateAddressOfUser
+const patchHandlerAfterValidations = authMiddleware(updateAddressOfUser);
+
+// Call the patchHandlerAfterValidations
+const methodHandler = methods({
+    patch: patchHandlerAfterValidations,
 });
 
-export default authMiddleware(handlerMethods);
+// Validate the body schema before calling the methodHandler
+export default schemaMiddleware(
+    [
+        {
+            schema: bodySchema,
+            reqType: "body",
+        },
+    ],
+    methodHandler
+);

@@ -1,15 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import methods from "micro-method-router";
-import { authMiddleware } from "lib/middlewares";
 import { User } from "models/user";
 import { Auth } from "models/auth";
-import { object, string, number, date, InferType } from "yup";
+import { authMiddleware, schemaMiddleware } from "lib/middlewares";
+import { object, string } from "yup";
 
 let bodySchema = object({
-    email: string(),
-})
-    .noUnknown(true)
-    .strict();
+    email: string().required(),
+    userName: string(),
+});
 
 type TokenData = {
     userId: string;
@@ -30,14 +29,6 @@ async function updateDataOfUser(
     res: NextApiResponse,
     token: TokenData
 ) {
-    try {
-        await bodySchema.validate(req.body);
-    } catch (e) {
-        res.status(400).send({
-            field: "body",
-            error: e,
-        });
-    }
     const user = new User(token.userId);
     user.data = req.body;
     await user.pushUserData();
@@ -47,9 +38,22 @@ async function updateDataOfUser(
     res.status(200).send(user.data);
 }
 
-const handlerMethods = methods({
+// Validate the token and execute the updateDataOfUser
+const patchHandlerAfterValidations = authMiddleware(updateDataOfUser);
+
+// Call the patchHandlerAfterValidations
+const methodHandler = methods({
     get: getInfoOfUser,
-    patch: updateDataOfUser,
+    patch: patchHandlerAfterValidations,
 });
 
-export default authMiddleware(handlerMethods);
+// Validate the body schema before calling the methodHandler
+export default schemaMiddleware(
+    [
+        {
+            schema: bodySchema,
+            reqType: "body",
+        },
+    ],
+    methodHandler
+);
