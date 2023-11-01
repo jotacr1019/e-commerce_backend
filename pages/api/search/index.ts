@@ -2,11 +2,15 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import methods from "micro-method-router";
 import { algoliaSearch } from "controllers/search";
 import { schemaMiddleware } from "lib/middlewares";
-import { object, string } from "yup";
+import { object, string, number } from "yup";
 
 let querySchema = object({
-    search: string().required(),
-});
+    q: string().required(),
+    limit: string(),
+    offset: string(),
+})
+    .noUnknown(true)
+    .strict();
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
