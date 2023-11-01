@@ -1,7 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import methods from "micro-method-router";
-import { authMiddleware } from "lib/middlewares";
 import { Order } from "models/order";
+import { authMiddleware, schemaMiddleware } from "lib/middlewares";
+import { object, string } from "yup";
+
+let querySchema = object({
+    orderId: string().required(),
+});
 
 async function handlerOrder(req: NextApiRequest, res: NextApiResponse, token) {
     const orderId = req.query.orderId as string;
@@ -14,8 +19,21 @@ async function handlerOrder(req: NextApiRequest, res: NextApiResponse, token) {
     res.status(200).send(order.data);
 }
 
+// Validate the token and execute the handlerOrder
+const getHandlerAfterValidations = authMiddleware(handlerOrder);
+
+// Call the getHandlerAfterValidations
 const methodHandler = methods({
-    get: handlerOrder,
+    get: getHandlerAfterValidations,
 });
 
-export default authMiddleware(methodHandler);
+// Validate the query schema before calling the methodHandler
+export default schemaMiddleware(
+    [
+        {
+            schema: querySchema,
+            reqType: "query",
+        },
+    ],
+    methodHandler
+);
