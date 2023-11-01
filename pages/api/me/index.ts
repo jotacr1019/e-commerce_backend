@@ -3,6 +3,13 @@ import methods from "micro-method-router";
 import { authMiddleware } from "lib/middlewares";
 import { User } from "models/user";
 import { Auth } from "models/auth";
+import { object, string, number, date, InferType } from "yup";
+
+let bodySchema = object({
+    email: string(),
+})
+    .noUnknown(true)
+    .strict();
 
 type TokenData = {
     userId: string;
@@ -23,6 +30,14 @@ async function updateDataOfUser(
     res: NextApiResponse,
     token: TokenData
 ) {
+    try {
+        await bodySchema.validate(req.body);
+    } catch (e) {
+        res.status(400).send({
+            field: "body",
+            error: e,
+        });
+    }
     const user = new User(token.userId);
     user.data = req.body;
     await user.pushUserData();

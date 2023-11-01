@@ -23,3 +23,25 @@ export function authMiddleware(callback) {
         callback(req, res, decodedToken);
     };
 }
+
+export function schemaMiddleware(schemas, callback) {
+    return async function (req: NextApiRequest, res: NextApiResponse) {
+        let hasError = false;
+
+        for (const schema of schemas) {
+            try {
+                await schema.schema.validate(req[schema.reqType]);
+            } catch (e) {
+                res.status(400).send({
+                    field: schema.reqType,
+                    error: e,
+                });
+                hasError = true;
+                break;
+            }
+        }
+        if (!hasError) {
+            callback(req, res);
+        }
+    };
+}
