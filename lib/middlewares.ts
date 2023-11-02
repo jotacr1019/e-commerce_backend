@@ -6,7 +6,7 @@ export function authMiddleware(callback) {
     return function (req: NextApiRequest, res: NextApiResponse) {
         const token = parseToken(req);
         if (!token) {
-            res.status(401).send({
+            res.status(400).send({
                 message: "Token required",
             });
             return;
@@ -26,8 +26,12 @@ export function authMiddleware(callback) {
 
 export function schemaMiddleware(schemas, callback) {
     return async function (req: NextApiRequest, res: NextApiResponse) {
-        let hasError = false;
+        if (!req.body && Object.keys(req.query).length === 0) {
+            callback(req, res);
+            return;
+        }
 
+        let hasError = false;
         for (const schema of schemas) {
             try {
                 await schema.schema.validate(req[schema.reqType]);

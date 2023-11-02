@@ -38,12 +38,13 @@ async function updateDataOfUser(
     res.status(200).send(user.data);
 }
 
-// Validate the token and execute the updateDataOfUser
+// Validate the token and execute the updateDataOfUser and getInfoOfUser
 const patchHandlerAfterValidations = authMiddleware(updateDataOfUser);
+const getHandlerAfterValidations = authMiddleware(getInfoOfUser);
 
 // Call the patchHandlerAfterValidations
 const methodHandler = methods({
-    get: getInfoOfUser,
+    get: getHandlerAfterValidations,
     patch: patchHandlerAfterValidations,
 });
 
