@@ -6,7 +6,7 @@ import { authMiddleware, schemaMiddleware } from "lib/middlewares";
 import { object, string } from "yup";
 
 let bodySchema = object({
-    email: string().required(),
+    email: string(),
     userName: string(),
 });
 
