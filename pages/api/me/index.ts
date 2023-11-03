@@ -32,9 +32,11 @@ async function updateDataOfUser(
     const user = new User(token.userId);
     user.data = req.body;
     await user.pushUserData();
+
     const auth = await Auth.findByUserId(token.userId);
     auth.data.email = req.body.email;
     await auth.pushUserData();
+
     res.status(200).send(user.data);
 }
 
@@ -42,7 +44,7 @@ async function updateDataOfUser(
 const patchHandlerAfterValidations = authMiddleware(updateDataOfUser);
 const getHandlerAfterValidations = authMiddleware(getInfoOfUser);
 
-// Call the patchHandlerAfterValidations
+// Call the patchHandlerAfterValidations and getHandlerAfterValidations
 const methodHandler = methods({
     get: getHandlerAfterValidations,
     patch: patchHandlerAfterValidations,

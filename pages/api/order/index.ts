@@ -5,9 +5,6 @@ import { getProductById } from "controllers/products";
 import { authMiddleware, schemaMiddleware } from "lib/middlewares";
 import { object, string, number } from "yup";
 
-// https://webhook.site/6ed1bbeb-3cc2-4b64-a4b6-9f8cde7071ad
-// https://e-commerce-backend-rho-blush.vercel.app/api/webHooks/tilopay
-
 let querySchema = object({
     productId: string().required(),
 });

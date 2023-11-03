@@ -10,8 +10,8 @@ type PaymentLinkResponse = {
     id: number;
 };
 
+// esperar a ver como va a ser la info final de los products
 type ProductInfo = {};
-
 type ProductData = {};
 
 export async function createOrder(

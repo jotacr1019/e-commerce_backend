@@ -17,6 +17,7 @@ export async function verifyTransactionAndUpdateOrder(tilopayData) {
         );
         const order = await updateAndReturnOrder(detailsOfPayment);
 
+        // esperar por la info final de products
         await sendMessageToSeller(
             {
                 user_name: detailsOfPayment.detail.client,
@@ -31,6 +32,7 @@ export async function verifyTransactionAndUpdateOrder(tilopayData) {
             order.data.aditionalInfo.sellerInfo.email
         );
 
+        // esperar por la info final de products
         await sendSuccessfulMessageToBuyer(
             {
                 user_name: detailsOfPayment.detail.client,

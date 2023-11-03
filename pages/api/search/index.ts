@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import methods from "micro-method-router";
 import { algoliaSearch } from "controllers/search";
 import { schemaMiddleware } from "lib/middlewares";
-import { object, string, number } from "yup";
+import { object, string } from "yup";
 
 let querySchema = object({
     q: string().required(),

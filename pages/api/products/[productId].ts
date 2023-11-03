@@ -27,10 +27,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 }
 
+// Execute the handler function
 const methodHandler = methods({
     get: handler,
 });
 
+// Validate the query schema before calling the methodHandler
 export default schemaMiddleware(
     [
         {

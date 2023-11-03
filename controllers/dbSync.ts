@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiResponse } from "next";
 import { airtableBase } from "lib/airtable";
 import { productsIndex } from "lib/algolia";
 

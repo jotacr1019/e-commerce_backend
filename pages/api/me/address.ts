@@ -4,6 +4,13 @@ import { User } from "models/user";
 import { authMiddleware, schemaMiddleware } from "lib/middlewares";
 import { object, string } from "yup";
 
+// ******
+
+// WAIT TO SEE WHY I NEED THIS ENDPOINT, AND FIXED IT IN POSTMAN
+//  IN CASE OF NEED TO USE IT
+
+// ******
+
 let bodySchema = object({
     address: string().required(),
 });
