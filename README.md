@@ -1,4 +1,4 @@
-# E-Commerce (backend).
+# E-Commerce (backend)
 
 ## Proyecto de la carrera "Software Developer" de APX School.
 
@@ -11,7 +11,7 @@ Backend serverless basado en Node.js y con una arquitectura MVC, que proporciona
 
 ## Tech Stack
 
-**Backend**: Airtable, Algolia, Firebase, NextJS, Vercel, JWT, YUP, Resend, Tilopay, patrón MVC.
+**Backend**: Typescript, Airtable, Algolia, Firebase, NextJS, Vercel, JWT, YUP, Resend, Tilopay, patrón MVC.
 
 _ _ _
 
