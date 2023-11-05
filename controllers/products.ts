@@ -6,3 +6,8 @@ export async function getProductById(productId) {
     );
     return indexResponse;
 }
+
+export async function getAllProducts() {
+    const indexResponse = await productsIndex.search("");
+    return indexResponse;
+}
