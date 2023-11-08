@@ -52,14 +52,21 @@ export function schemaMiddleware(schemas, callback) {
 }
 
 export function corsMiddleware(callback) {
-    console.log("corsMiddleware");
+    // console.log("corsMiddleware");
     return async function (req: NextApiRequest, res: NextApiResponse) {
-        await NextCors(req, res, {
-            methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-            origin: "*",
-            optionsSuccessStatus: 200,
-        });
+        try {
+            await NextCors(req, res, {
+                methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+                origin: "*",
+                optionsSuccessStatus: 200,
+            });
 
-        callback(req, res);
+            callback(req, res);
+        } catch (e) {
+            res.status(500).send({
+                message: "An error occurred in corsMiddleware",
+                error: e,
+            });
+        }
     };
 }
