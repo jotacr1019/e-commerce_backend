@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import methods from "micro-method-router";
 import { algoliaSearch } from "controllers/search";
-import { schemaMiddleware } from "lib/middlewares";
+import { schemaMiddleware, corsMiddleware } from "lib/middlewares";
 import { object, string } from "yup";
 
 let querySchema = object({
@@ -47,7 +47,7 @@ const methodHandler = methods({
 });
 
 // Validate the body schema before calling the methodHandler
-export default schemaMiddleware(
+const validateSchema = schemaMiddleware(
     [
         {
             schema: querySchema,
@@ -56,3 +56,6 @@ export default schemaMiddleware(
     ],
     methodHandler
 );
+
+// Execute the corsMiddleware and calls the validateSchema
+export default corsMiddleware(validateSchema);
