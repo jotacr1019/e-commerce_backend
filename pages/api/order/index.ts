@@ -2,7 +2,11 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import methods from "micro-method-router";
 import { createOrder, getPaymentLink } from "controllers/order";
 import { getProductById } from "controllers/products";
-import { authMiddleware, schemaMiddleware } from "lib/middlewares";
+import {
+    authMiddleware,
+    schemaMiddleware,
+    corsMiddleware,
+} from "lib/middlewares";
 import { object, string, number } from "yup";
 
 let querySchema = object({
@@ -71,7 +75,7 @@ const methodHandler = methods({
 });
 
 // Validate the query and body schemas before calling the methodHandler
-export default schemaMiddleware(
+const validateSchema = schemaMiddleware(
     [
         {
             schema: querySchema,
@@ -84,3 +88,6 @@ export default schemaMiddleware(
     ],
     methodHandler
 );
+
+// Execute the corsMiddleware and calls the validateSchema
+export default corsMiddleware(validateSchema);
