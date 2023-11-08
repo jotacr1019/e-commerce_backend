@@ -40,4 +40,5 @@ const validateSchema = schemaMiddleware(
     methodHandler
 );
 
+// Execute the corsMiddleware and calls the validateSchema
 export default corsMiddleware(validateSchema);

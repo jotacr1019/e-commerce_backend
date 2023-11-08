@@ -1,7 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import methods from "micro-method-router";
 import { User } from "models/user";
-import { authMiddleware, schemaMiddleware } from "lib/middlewares";
+import {
+    authMiddleware,
+    schemaMiddleware,
+    corsMiddleware,
+} from "lib/middlewares";
 import { object, string } from "yup";
 
 // ******
@@ -39,7 +43,7 @@ const methodHandler = methods({
 });
 
 // Validate the body schema before calling the methodHandler
-export default schemaMiddleware(
+const validateSchema = schemaMiddleware(
     [
         {
             schema: bodySchema,
@@ -48,3 +52,6 @@ export default schemaMiddleware(
     ],
     methodHandler
 );
+
+// Execute the corsMiddleware and calls the validateSchema
+export default corsMiddleware(validateSchema);
