@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import NextCors from "nextjs-cors";
 import parseToken from "parse-bearer-token";
-import { decodeToken } from "lib/jwt";
+import { decodeToken } from "./jwt";
 
 export function authMiddleware(callback) {
     return function (req: NextApiRequest, res: NextApiResponse) {
@@ -21,7 +21,7 @@ export function authMiddleware(callback) {
             });
             return;
         }
-        callback(req, res, decodedToken);
+        callback(req, res, decodedToken["userId"]);
     };
 }
 
@@ -52,7 +52,6 @@ export function schemaMiddleware(schemas, callback) {
 }
 
 export function corsMiddleware(callback) {
-    // console.log("corsMiddleware");
     return async function (req: NextApiRequest, res: NextApiResponse) {
         try {
             await NextCors(req, res, {

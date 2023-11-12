@@ -1,10 +1,6 @@
 import { Order } from "models/order";
 import { getTokenFromTiloPay, createPaymentLink } from "lib/apiTiloPay";
 
-type TokenData = {
-    userId: string;
-};
-
 type PaymentLinkResponse = {
     url: string;
     id: number;
@@ -15,13 +11,13 @@ type ProductInfo = {};
 type ProductData = {};
 
 export async function createOrder(
-    token: TokenData,
+    userId: string,
     productId: string,
     productInfo,
     product
 ): Promise<Order> {
     const newOrder = await Order.createNewOrder({
-        userId: token.userId,
+        userId: userId,
         productId,
         aditionalInfo: {
             productInfo,

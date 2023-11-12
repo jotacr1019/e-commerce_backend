@@ -14,16 +14,12 @@ let bodySchema = object({
     userName: string(),
 });
 
-type TokenData = {
-    userId: string;
-};
-
 async function getInfoOfUser(
     req: NextApiRequest,
     res: NextApiResponse,
-    token: TokenData
+    userId: string
 ) {
-    const user = new User(token.userId);
+    const user = new User(userId);
     await user.pullUserData();
     res.status(200).send(user.data);
 }
@@ -31,13 +27,13 @@ async function getInfoOfUser(
 async function updateDataOfUser(
     req: NextApiRequest,
     res: NextApiResponse,
-    token: TokenData
+    userId: string
 ) {
-    const user = new User(token.userId);
+    const user = new User(userId);
     user.data = req.body;
     await user.pushUserData();
 
-    const auth = await Auth.findByUserId(token.userId);
+    const auth = await Auth.findByUserId(userId);
     auth.data.email = req.body.email;
     await auth.pushUserData();
 

@@ -29,7 +29,11 @@ let bodySchema = object({
     .noUnknown(true)
     .strict();
 
-async function handler(req: NextApiRequest, res: NextApiResponse, token) {
+async function handler(
+    req: NextApiRequest,
+    res: NextApiResponse,
+    userId: string
+) {
     try {
         const { productId } = req.query as any;
         const productInfo = req.body.productInfo;
@@ -44,7 +48,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse, token) {
         }
 
         const newOrder = await createOrder(
-            token,
+            userId,
             productId,
             productInfo,
             productFound

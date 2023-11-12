@@ -3,16 +3,12 @@ import methods from "micro-method-router";
 import { authMiddleware, corsMiddleware } from "lib/middlewares";
 import { Order } from "models/order";
 
-type TokenData = {
-    userId: string;
-};
-
 async function getOrdersOfUser(
     req: NextApiRequest,
     res: NextApiResponse,
-    token: TokenData
+    userId: string
 ) {
-    const ordersOfUser = await Order.getOrdersOfUser(token.userId);
+    const ordersOfUser = await Order.getOrdersOfUser(userId);
     if (!ordersOfUser) {
         res.status(404).send({
             message: "Not found any orders",
