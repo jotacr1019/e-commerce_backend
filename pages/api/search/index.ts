@@ -14,7 +14,7 @@ let querySchema = object({
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
-        const query = req.query.search as string;
+        const query = req.query.q as string;
         const { indexResponse, limit, offset } = await algoliaSearch(
             req,
             query
