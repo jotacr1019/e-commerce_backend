@@ -59,9 +59,9 @@ async function handler(
             newOrder.id,
             productFound
         );
-        const { url, id } = paymentLink;
+        const { url, linkId, orderId } = paymentLink;
 
-        res.status(200).send({ url, id });
+        res.status(200).send({ url, linkId, orderId });
     } catch (e) {
         res.status(500).send({
             message: "An error occurred",

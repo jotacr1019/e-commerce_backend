@@ -3,7 +3,8 @@ import { getTokenFromTiloPay, createPaymentLink } from "lib/apiTiloPay";
 
 type PaymentLinkResponse = {
     url: string;
-    id: number;
+    linkId: number;
+    orderId: string;
 };
 
 // esperar a ver como va a ser la info final de los products
@@ -53,5 +54,5 @@ export async function getPaymentLink(
         dataForPaymentLink,
         orderId
     );
-    return { url: paymentLink.url, id: paymentLink.id };
+    return { url: paymentLink.url, linkId: paymentLink.id, orderId };
 }
