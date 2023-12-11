@@ -15,4 +15,5 @@ Backend serverless basado en Node.js y con una arquitectura MVC, que proporciona
 
 _ _ _
 
-#### Nota: Tarjeta para realizar pruebas de pago en Tilopay: 4012000000020071.
+> [!NOTE]  
+> Tarjeta para realizar pruebas de pago en Tilopay: 4012000000020071.
