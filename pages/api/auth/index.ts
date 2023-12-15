@@ -6,15 +6,13 @@ import { object, string } from "yup";
 
 let bodySchema = object({
     email: string().required(),
-    userName: string(),
 });
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
         const { email } = req.body;
-        const userName = req.body.userName ? req.body.userName : "Usuario";
 
-        const response = await sendCodeToUser(email, userName);
+        const response = await sendCodeToUser(email);
         res.status(200).send(response);
     } catch (e) {
         res.status(500).send({
