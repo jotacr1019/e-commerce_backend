@@ -7,11 +7,16 @@ import {
     schemaMiddleware,
     corsMiddleware,
 } from "lib/middlewares";
-import { object, string } from "yup";
+import { array, object, string } from "yup";
 
 let bodySchema = object({
     email: string(),
-    userName: string(),
+    personalInformation: object({
+        fullName: string(),
+        address: string(),
+        phone: string(),
+    }),
+    likedItems: array(object({})),
 });
 
 async function getInfoOfUser(
@@ -34,7 +39,7 @@ async function updateDataOfUser(
     await user.pushUserData();
 
     const auth = await Auth.findByUserId(userId);
-    auth.data.email = req.body.email;
+    auth.data = req.body;
     await auth.pushUserData();
 
     res.status(200).send(user.data);
