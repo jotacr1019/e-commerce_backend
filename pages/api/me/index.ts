@@ -38,10 +38,6 @@ async function updateDataOfUser(
     user.data = req.body;
     await user.pushUserData();
 
-    const auth = await Auth.findByUserId(userId);
-    auth.data = req.body;
-    await auth.pushUserData();
-
     res.status(200).send(user.data);
 }
 
