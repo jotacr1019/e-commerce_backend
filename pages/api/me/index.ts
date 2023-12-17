@@ -41,14 +41,30 @@ async function updateDataOfUser(
     res.status(200).send(user.data);
 }
 
-// Validate the token and execute the updateDataOfUser and getInfoOfUser
+async function removeLikedItemOfUser(
+    req: NextApiRequest,
+    res: NextApiResponse,
+    userId: string
+) {
+    const user = new User(userId);
+    await user.pullUserData();
+    user.data.likedItems = user.data.likedItems.filter(
+        (item) => item.itemId !== req.body.itemId
+    );
+    await user.pushUserData();
+    res.status(200).send(user.data);
+}
+
+// Validate the token and execute the updateDataOfUser, getInfoOfUser and removeLikedItemOfUser
 const patchHandlerAfterValidations = authMiddleware(updateDataOfUser);
 const getHandlerAfterValidations = authMiddleware(getInfoOfUser);
+const removeLikedItemHandler = authMiddleware(removeLikedItemOfUser);
 
 // Call the patchHandlerAfterValidations and getHandlerAfterValidations
 const methodHandler = methods({
     get: getHandlerAfterValidations,
     patch: patchHandlerAfterValidations,
+    delete: removeLikedItemHandler,
 });
 
 // Validate the body schema before calling the methodHandler
