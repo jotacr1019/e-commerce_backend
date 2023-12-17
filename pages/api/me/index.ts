@@ -35,9 +35,10 @@ async function updateDataOfUser(
     userId: string
 ) {
     const user = new User(userId);
+    await user.pullUserData();
 
-    if (req.body.likedItems) {
-        user.data.likedItems.push(req.body.likedItems);
+    if (!req.body.personalInformation) {
+        user.data.likedItems.push(req.body);
         await user.pushUserData();
         res.status(200).send(user.data);
         return;
