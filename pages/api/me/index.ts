@@ -35,6 +35,14 @@ async function updateDataOfUser(
     userId: string
 ) {
     const user = new User(userId);
+
+    if (req.body.likedItems) {
+        user.data.likedItems.push(req.body.likedItems);
+        await user.pushUserData();
+        res.status(200).send(user.data);
+        return;
+    }
+
     user.data = req.body;
     await user.pushUserData();
 
