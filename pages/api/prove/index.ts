@@ -9,9 +9,15 @@ let bodySchema = object({
 });
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-    console.log("in");
+    const indicador = 317;
+    const fechaInicio = "19/12/2023";
+    const fechaFinal = "19/12/2023";
+    const name = "José Joaquín Fernández";
+    const subNiveles = "S";
+    const correo = "jotaj19@hotmail.com";
+    const token = "1NN2JU10ON";
     const response = await fetch(
-        "https://gee.bccr.fi.cr/Indicadores/Suscripciones/WS/wsindicadoreseconomicos.asmx/ObtenerIndicadoresEconomicosXML?Indicador=316&FechaInicio=19/12/2023&FechaFinal=19/12/2023&Nombre=%22Jos%C3%A9%20Joaqu%C3%ADn%20Fern%C3%A1ndez%22&SubNiveles=%22N%22&CorreoElectronico=jotaj19@hotmail.com&Token=1NN2JU10ON"
+        `https://gee.bccr.fi.cr/Indicadores/Suscripciones/WS/wsindicadoreseconomicos.asmx/ObtenerIndicadoresEconomicosXML?Indicador=${indicador}&FechaInicio=${fechaInicio}&FechaFinal=${fechaFinal}&Nombre=${name}&SubNiveles=${subNiveles}&CorreoElectronico=${correo}&Token=${token}`
     );
     if (response.ok) {
         const data = await response.text();
