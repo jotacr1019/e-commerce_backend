@@ -23,4 +23,20 @@ export class Cart {
         newCart.data = data;
         return newCart;
     }
+
+    static async getCartOfUser(userId: string) {
+        const results = await cartCollection
+            .where("userId", "==", userId)
+            .get();
+        if (results.docs.length) {
+            const cart = results.docs.map((doc) => {
+                const cart = new Cart(doc.id);
+                cart.data = doc.data();
+                return cart.data;
+            });
+            return cart;
+        } else {
+            return null;
+        }
+    }
 }
