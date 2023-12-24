@@ -11,7 +11,7 @@ type PaymentLinkResponse = {
 type ProductInfo = {};
 type ProductData = {};
 
-export async function createOrder(
+export async function createOrderforSingleProduct(
     userId: string,
     productId: string,
     productInfo,
@@ -31,19 +31,36 @@ export async function createOrder(
     return newOrder;
 }
 
+export async function createOrderforMultipleProducts(
+    userId: string,
+    productInfo
+): Promise<Order> {
+    const newOrder = await Order.createNewOrder({
+        userId: userId,
+        products: productInfo,
+        aditionalInfo: {
+            sellerInfo: {
+                email: productInfo[0].sellerEmail,
+            },
+        },
+        status: "pending",
+    });
+    return newOrder;
+}
+
 export async function getPaymentLink(
     clientName: string,
     orderId: string,
-    product
+    totalAmount
 ): Promise<PaymentLinkResponse> {
     const tilopayResponse = await getTokenFromTiloPay();
     const tilopayToken = tilopayResponse.access_token;
 
     const dataForPaymentLink = {
-        amount: product.object["Unit cost"],
-        currency: product.object["Currency"],
+        amount: totalAmount,
+        currency: "CRC",
         type: 1,
-        description: product.object["Description"],
+        description: "Payment link for e-commerce",
         client: clientName,
         callback_url:
             "https://e-commerce-backend-rho-blush.vercel.app/api/webHooks/tilopay",
