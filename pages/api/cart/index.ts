@@ -28,11 +28,7 @@ async function getCartData(
     res.status(200).send(cart);
 }
 
-async function updateCartOfUser(
-    req: NextApiRequest,
-    res: NextApiResponse,
-    userId: string
-) {
+async function updateCartOfUser(req: NextApiRequest, res: NextApiResponse) {
     const cart = new Cart(req.body.cartId);
     await cart.pullCartData();
     cart.data.items.push({ itemId: req.body.itemId });
@@ -43,8 +39,7 @@ async function updateCartOfUser(
 
 async function removeItemInCartOfUser(
     req: NextApiRequest,
-    res: NextApiResponse,
-    userId: string
+    res: NextApiResponse
 ) {
     const cart = new Cart(req.body.cartId);
     await cart.pullCartData();
