@@ -115,6 +115,7 @@ async function handlerMultipleProducts(
     res: NextApiResponse,
     userId: string
 ) {
+    console.log("handlerMultipleProducts");
     try {
         const detailOfProducts = req.body.products;
         const clientName = req.body.clientInfo.clientName;
@@ -174,32 +175,28 @@ async function handlerMultipleProducts(
 }
 
 // Apply corsMiddleware and schemaMiddleware to every handler
-const singleProductHandlerWithMiddleware = corsMiddleware(
-    schemaMiddleware(
-        [
-            {
-                schema: querySchema,
-                reqType: "query",
-            },
-            {
-                schema: singlebodySchema,
-                reqType: "body",
-            },
-        ],
-        authMiddleware(handlerSingleProduct)
-    )
+const singleProductHandlerWithMiddleware = schemaMiddleware(
+    [
+        {
+            schema: querySchema,
+            reqType: "query",
+        },
+        {
+            schema: singlebodySchema,
+            reqType: "body",
+        },
+    ],
+    authMiddleware(handlerSingleProduct)
 );
 
-const multipleProductHandlerWithMiddleware = corsMiddleware(
-    schemaMiddleware(
-        [
-            {
-                schema: MultiplebodySchema,
-                reqType: "body",
-            },
-        ],
-        authMiddleware(handlerMultipleProducts)
-    )
+const multipleProductHandlerWithMiddleware = schemaMiddleware(
+    [
+        {
+            schema: MultiplebodySchema,
+            reqType: "body",
+        },
+    ],
+    authMiddleware(handlerMultipleProducts)
 );
 
 // Define the methods for each handler
@@ -211,15 +208,15 @@ const multipleProductsMethodHandler = methods({
     post: multipleProductHandlerWithMiddleware,
 });
 
-// EXport the main function to handle the requests
-export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse
-) {
+// Export the main function to handle the requests
+async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { productId } = req.query;
 
     if (productId) {
         return singleProductMethodHandler(req, res);
     }
+    console.log("if NO Multiple products");
     return multipleProductsMethodHandler(req, res);
 }
+
+export default corsMiddleware(handler);
