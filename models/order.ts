@@ -3,8 +3,9 @@ import { firestore } from "lib/firestore";
 type OrderData = {
     status: "pending" | "approved" | "rejected";
     userId: string;
-    productId: string;
+    productId?: string;
     aditionalInfo: {};
+    products?: [];
 };
 
 const orderCollection = firestore.collection("orders");
