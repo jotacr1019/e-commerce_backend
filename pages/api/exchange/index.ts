@@ -1,10 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getExchangeRate } from "lib/exchangeRate";
+import { corsMiddleware } from "lib/middlewares";
 
-export default async function exchangeHandler(
-    req: NextApiRequest,
-    res: NextApiResponse
-) {
+async function exchangeHandler(req: NextApiRequest, res: NextApiResponse) {
     const response = await getExchangeRate();
 
     if (!response) {
@@ -16,3 +14,5 @@ export default async function exchangeHandler(
 
     res.status(200).send(response);
 }
+
+export default corsMiddleware(exchangeHandler);
