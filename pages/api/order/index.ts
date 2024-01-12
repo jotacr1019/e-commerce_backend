@@ -158,10 +158,12 @@ async function handlerMultipleProducts(
 
         const totalAmount = prices.reduce((a, b) => a + b);
 
+        const totalAmountPlusShipping = totalAmount + 3500;
+
         const paymentLink = await getPaymentLink(
             clientName,
             newOrder.id,
-            totalAmount
+            totalAmountPlusShipping
         );
         const { url, linkId, orderId } = paymentLink;
 
