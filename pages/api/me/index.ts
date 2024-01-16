@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import methods from "micro-method-router";
 import { User } from "models/user";
-import { Auth } from "models/auth";
 import {
     authMiddleware,
     schemaMiddleware,

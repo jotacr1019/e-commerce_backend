@@ -8,13 +8,6 @@ import {
 } from "lib/middlewares";
 import { object, string } from "yup";
 
-// ******
-
-// WAIT TO SEE WHY I NEED THIS ENDPOINT, AND FIXED IT IN POSTMAN
-//  IN CASE OF NEED TO USE IT
-
-// ******
-
 let bodySchema = object({
     address: string().required(),
 });
@@ -25,9 +18,10 @@ async function updateAddressOfUser(
     userId: string
 ) {
     const user = new User(userId);
-    user.data.address = req.body.address;
+    await user.pullUserData();
+    user.data.personalInformation.address = req.body.address;
     await user.pushUserData();
-    res.status(200).send(user.data.address);
+    res.status(200).send(user.data.personalInformation.address);
 }
 
 // Validate the token and execute the updateAddressOfUser
